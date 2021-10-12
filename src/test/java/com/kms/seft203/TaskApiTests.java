@@ -27,7 +27,7 @@ public class TaskApiTests {
 
     @Test
     void testGetCurrentVersion() throws Exception {
-        Task task = new Task("1", "Task 1", false, "user-1");
+        Task task = new Task(1L, "Task 1", false, "user-1");
 
         this.mockMvc.perform(
                     post("/tasks")
