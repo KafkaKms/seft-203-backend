@@ -1,11 +1,10 @@
 package com.kms.seft203.task;
 
+import com.kms.seft203.exceptions.DataNotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class TaskService {
 
     public Task getById(Long id) {
         if (!taskRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task id not found");
+            throw new DataNotFoundException();
         }
 
         return taskRepository.getById(id);
@@ -35,7 +34,7 @@ public class TaskService {
 
     public Task update(Long id, SaveTaskRequest saveTaskRequest) {
         if (!taskRepository.existsById(id)) {
-            return null;
+            throw new DataNotFoundException();
         }
 
         var tobeUpdated = taskRepository.getById(id);
