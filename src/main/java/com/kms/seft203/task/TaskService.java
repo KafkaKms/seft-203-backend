@@ -21,11 +21,13 @@ public class TaskService {
     }
 
     public Task getById(Long id) {
-        if (!taskRepository.existsById(id)) {
+        var task = taskRepository.findById(id).orElse(null);
+
+        if (ObjectUtils.isNotEmpty(task)) {
+            return task;
+        } else {
             throw new DataNotFoundException();
         }
-
-        return taskRepository.getById(id);
     }
 
     public Task create(@NonNull SaveTaskRequest saveTaskRequest) {
@@ -33,14 +35,13 @@ public class TaskService {
     }
 
     public Task update(Long id, SaveTaskRequest saveTaskRequest) {
-        if (!taskRepository.existsById(id)) {
-            throw new DataNotFoundException();
-        }
+        var tobeUpdated = taskRepository.findById(id).orElse(null);
 
-        var tobeUpdated = taskRepository.getById(id);
         if (ObjectUtils.isNotEmpty(tobeUpdated)) {
             BeanUtils.copyProperties(saveTaskRequest, tobeUpdated);
             taskRepository.saveAndFlush(tobeUpdated);
+        } else {
+            throw new DataNotFoundException();
         }
 
         return tobeUpdated;

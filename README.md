@@ -34,11 +34,11 @@ For skipping tests (one test intentionally to fail)
 > ./gradlew test
 
 ## Things Done
-- [ ] Data stored in the RDBMS
+- [x] Data stored in the RDBMS
 - [ ] Migration management
-- [ ] Errors should be handled
+- [x] Errors should be handled
 - [ ] Logs are store in file and print to the console
-- [ ] Return HTTP code correctly
+- [x] Return HTTP code correctly
 - [ ] Data need to be validated
 - [ ] All the APIs only allow authenticated users to access except /auth/login API
 - [ ] Password needs to be stored securely in the database
