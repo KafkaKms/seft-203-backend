@@ -1,48 +1,56 @@
 package com.kms.seft203.contact;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/contacts")
 public class ContactApi {
-    private static final Map<String, Contact> DATA = new HashMap<>();
+    final ContactService contactService;
+
+    public ContactApi(ContactService contactService) {
+        this.contactService = contactService;
+    }
 
     @GetMapping
     public List<Contact> getAll() {
-        return new ArrayList<>(DATA.values());
+        return contactService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Contact getOne(@PathVariable String id) {
-        return DATA.get(id);
+    public ResponseEntity<Contact> getOne(@PathVariable Long id) {
+        return ResponseEntity.ok(contactService.findById(id));
     }
 
     @PostMapping
-    public Contact create(@RequestBody SaveContactRequest request) {
-        DATA.put(request.getId(), request);
-        return request;
+    public ResponseEntity<Contact> create(@Valid @RequestBody SaveContactRequest saveContactRequest) {
+        if (ObjectUtils.isNotEmpty(saveContactRequest)) {
+            return ResponseEntity.ok(contactService.create(Contact.of(saveContactRequest)));
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{id}")
-    public Contact update(@PathVariable String id, @RequestBody SaveContactRequest request) {
-        DATA.put(id, request);
-        return request;
+    public ResponseEntity<Contact> update(@PathVariable Long id,
+                                          @Valid @RequestBody SaveContactRequest saveContactRequest) {
+        return ResponseEntity.ok(contactService.update(id, Contact.of(saveContactRequest)));
     }
 
     @DeleteMapping("/{id}")
-    public Contact delete(@PathVariable String id) {
-        return DATA.remove(id);
+    public ResponseEntity<Contact> delete(@PathVariable Long id) {
+        contactService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

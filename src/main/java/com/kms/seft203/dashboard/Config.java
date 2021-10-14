@@ -1,19 +1,15 @@
 package com.kms.seft203.dashboard;
 
-import com.kms.seft203.auth.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Entity
@@ -21,23 +17,14 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Dashboard {
+public class Config {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(length = 20)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String name;
 
-    @Column(length = 20)
-    private String title;
-
-    @Column(length = 20)
-    private String layoutType;
-
-    @OneToMany(mappedBy = "dashboard")
+    @ManyToMany(mappedBy = "configs")
     @ToString.Exclude
     private Set<Widget> widgets;
 }

@@ -1,9 +1,26 @@
 package com.kms.seft203.contact;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class SaveContactRequest extends Contact {
+public class SaveContactRequest {
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @NotBlank
+    private String title;
+
+    private String department;
+
+    private String project;
+
+    private String avatar;
+
+    @NotBlank
+    private Integer employeeId;
 }

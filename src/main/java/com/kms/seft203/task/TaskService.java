@@ -2,7 +2,6 @@ package com.kms.seft203.task;
 
 import com.kms.seft203.exceptions.DataNotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +34,11 @@ public class TaskService {
     }
 
     public Task update(Long id, SaveTaskRequest saveTaskRequest) {
-        var tobeUpdated = taskRepository.findById(id).orElse(null);
-
-        if (ObjectUtils.isNotEmpty(tobeUpdated)) {
-            BeanUtils.copyProperties(saveTaskRequest, tobeUpdated);
-            taskRepository.saveAndFlush(tobeUpdated);
+        if (taskRepository.existsById(id)) {
+            return taskRepository.saveAndFlush(Task.of(saveTaskRequest));
         } else {
             throw new DataNotFoundException();
         }
-
-        return tobeUpdated;
     }
 
     @NonNull

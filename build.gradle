@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+    id "org.flywaydb.flyway" version "8.0.1"
 }
 
 group = 'com.kms'
@@ -14,6 +15,12 @@ configurations {
 	}
 }
 
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/postgres'
+    user = 'postgres'
+    password = 'Pass#word'
+}
+
 repositories {
 	mavenCentral()
 }
@@ -23,6 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
 	implementation 'com.auth0:java-jwt:3.18.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.5'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'

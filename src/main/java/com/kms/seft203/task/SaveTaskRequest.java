@@ -1,9 +1,13 @@
 package com.kms.seft203.task;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class SaveTaskRequest extends Task {
+public class SaveTaskRequest {
+    @NotBlank(message = "Task must not empty")
+    protected String task;
+    @NotBlank(message = "userId must not empty")
+    protected String userId;
 }
