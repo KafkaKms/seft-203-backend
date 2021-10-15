@@ -3,6 +3,7 @@ package com.kms.seft203.contact;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class SaveContactRequest {
@@ -21,6 +22,6 @@ public class SaveContactRequest {
 
     private String avatar;
 
-    @NotBlank
+    @NotNull
     private Integer employeeId;
 }

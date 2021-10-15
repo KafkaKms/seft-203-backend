@@ -37,9 +37,18 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({DataNotFoundException.class})
-    public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException exception, WebRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException exception, WebRequest request,
+                                                              HttpServletRequest httpServletRequest) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(toJson(exception, request, httpServletRequest));
+    }
+
+    @ExceptionHandler({DuplicateException.class})
+    public ResponseEntity<Object> handleDuplicateException(Exception exception, WebRequest request,
+                                                           HttpServletRequest httpServletRequest) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(toJson(exception, request, httpServletRequest));
     }
 }

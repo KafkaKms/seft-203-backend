@@ -27,7 +27,8 @@ public class Contact {
 //    @NotBlank
     private String firstName;
 
-    @Column(nullable = false, length = 50) private String lastName;
+    @Column(nullable = false, length = 50)
+    private String lastName;
 
     @Column(nullable = false, length = 30)
     private String title;

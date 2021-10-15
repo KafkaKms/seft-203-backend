@@ -1,5 +1,6 @@
 package com.kms.seft203.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kms.seft203.dashboard.Dashboard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,7 @@ import javax.persistence.OneToOne;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 20)
     private Long id;
 
@@ -33,10 +34,22 @@ public class User {
     private String email;
 
     @Column(length = 20, nullable = false)
+    @JsonIgnore
     private String password;
 
     private String fullName;
 
     @OneToOne(mappedBy = "user")
     private Dashboard dashboard;
+
+    public static User of(RegisterRequest registerRequest) {
+        return new User(
+                0L,
+                registerRequest.getUsername(),
+                registerRequest.getEmail(),
+                registerRequest.getPassword(),
+                registerRequest.getFullName(),
+                null
+        );
+    }
 }

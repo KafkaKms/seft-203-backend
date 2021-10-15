@@ -35,7 +35,7 @@ For skipping tests (one test intentionally to fail)
 
 ## Things Done
 - [ ] Auth API
-- [ ] Contact API
+- [x] Contact API
 - [ ] Dashboard API
 - [ ] Report API
 - [x] Task API
@@ -49,3 +49,4 @@ For skipping tests (one test intentionally to fail)
 - [ ] Password needs to be stored securely in the database
 - [ ] Unit test
 - [ ] Code coverage 70%
+
