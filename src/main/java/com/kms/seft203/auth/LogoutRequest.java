@@ -8,5 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class LogoutRequest {
     @NotBlank
     private String token;
+
+    @NotBlank
     private String userId;
 }

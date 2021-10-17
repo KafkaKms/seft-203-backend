@@ -8,12 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -21,6 +16,7 @@ import javax.persistence.OneToOne;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Table(name = "user", schema = "public")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +29,7 @@ public class User {
     @Column(length = 50)
     private String email;
 
-    @Column(length = 20, nullable = false)
+    @Column(nullable = false)
     @JsonIgnore
     private String password;
 

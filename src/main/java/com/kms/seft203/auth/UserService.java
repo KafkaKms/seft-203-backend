@@ -17,12 +17,15 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private UserJwtRepository userJwtRepository;
+
     public User register(RegisterRequest registerRequest) {
-        if (userRepository.existsByUsername(registerRequest.getUsername())) {
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
             throw new DuplicateException("Username has been already existed");
         }
 
-        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
             throw new DuplicateException("Email has been already existed");
         }
 
@@ -46,9 +49,22 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
 
+        var token = jwtService.generateJwtToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+
+        userJwtRepository.save(new UserJwt(0L, token, refreshToken, user, true));
+
         return new LoginResponse(
-                jwtService.generateJwtToken(user),
-                ""
+                token,
+                refreshToken
         );
+    }
+
+    public void logout(String token) {
+        var userJwt = userJwtRepository.findByToken(token).orElse(null);
+        assert userJwt != null;
+        userJwt.setValid(false);
+
+        userJwtRepository.save(userJwt);
     }
 }

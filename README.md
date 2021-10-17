@@ -34,7 +34,7 @@ For skipping tests (one test intentionally to fail)
 > ./gradlew test
 
 ## Things Done
-- [ ] Auth API
+- [x] Auth API
 - [x] Contact API
 - [ ] Dashboard API
 - [ ] Report API
@@ -45,8 +45,8 @@ For skipping tests (one test intentionally to fail)
 - [x] Logs are store in file and print to the console
 - [x] Return HTTP code correctly
 - [x] Data need to be validated
-- [ ] All the APIs only allow authenticated users to access except /auth/login API
-- [ ] Password needs to be stored securely in the database
+- [x] All the APIs only allow authenticated users to access except /auth/login API
+- [x] Password needs to be stored securely in the database
 - [ ] Unit test
 - [ ] Code coverage 70%
 

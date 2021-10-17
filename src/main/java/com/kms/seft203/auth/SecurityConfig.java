@@ -23,6 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UserJwtRepository userJwtRepository;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(
@@ -55,13 +61,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Set permissions on endpoints
                 .authorizeRequests()
                 // Our public endpoints
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/register*", "/auth/login*").permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated()
                 .and()
                 // Add JWT token filter
                 .addFilterBefore(
-                        new AuthTokenFilter(),
+                        new AuthTokenFilter(jwtService, userRepository, userJwtRepository),
                         UsernamePasswordAuthenticationFilter.class
                 );
     }

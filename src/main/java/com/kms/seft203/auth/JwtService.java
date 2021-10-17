@@ -19,12 +19,22 @@ public class JwtService {
                 .withIssuer("kms")
                 .withClaim("username", user.getUsername())
                 .withClaim("fullName", user.getFullName())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (3 * 24 * 60 * 60 * 1000)))
+                .sign(algorithm);
+    }
+
+    public String generateRefreshToken(User user) {
+        var algorithm = Algorithm.HMAC256(jwtSecret);
+        return JWT.create()
+                .withIssuer("kms")
+                .withClaim("username", user.getUsername())
+                .withClaim("fullName", user.getFullName())
+                .withExpiresAt(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000 * 365L)))
                 .sign(algorithm);
     }
 
     public String decodeJwtToken(String token) {
-	    var decodedJWT = JWT.require(Algorithm.HMAC256(jwtSecret))
+        var decodedJWT = JWT.require(Algorithm.HMAC256(jwtSecret))
                 .withIssuer("kms")
                 .build()
                 .verify(token);
