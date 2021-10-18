@@ -36,7 +36,7 @@ For skipping tests (one test intentionally to fail)
 ## Things Done
 - [x] Auth API
 - [x] Contact API
-- [ ] Dashboard API
+- [x] Dashboard API
 - [ ] Report API
 - [x] Task API
 - [x] Data stored in the RDBMS

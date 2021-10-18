@@ -1,5 +1,6 @@
 package com.kms.seft203.dashboard;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -26,5 +27,6 @@ public class Config {
 
     @ManyToMany(mappedBy = "configs")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Widget> widgets;
 }

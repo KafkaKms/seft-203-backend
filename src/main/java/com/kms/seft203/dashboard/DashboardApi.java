@@ -1,27 +1,45 @@
 package com.kms.seft203.dashboard;
 
-import org.springframework.web.bind.annotation.*;
+import com.kms.seft203.auth.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @RestController
 @RequestMapping("/dashboards")
 public class DashboardApi {
 
-    private static final Map<String, Dashboard> DATA = new HashMap<>();
+    @Autowired
+    private DashboardService dashboardService;
 
     @GetMapping
-    public List<Dashboard> getAll() {
-        // TODO: get all dashboard of a logged in user
-        return new ArrayList<>(DATA.values());
+    public ResponseEntity<List<Dashboard>> getAll(Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(dashboardService.getAllByUserId(user.getId()));
+    }
+
+    @PostMapping
+    public ResponseEntity<Dashboard> create(@RequestBody @Valid SaveDashboardRequest saveDashboardRequest, Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(dashboardService.create(saveDashboardRequest, user));
     }
 
     @PutMapping("/{id}")
-    public Dashboard save(@PathVariable String id, @RequestBody SaveDashboardRequest request) {
-        DATA.put(id, request);
-        return request;
+    public ResponseEntity<Dashboard> save(@PathVariable Long id,
+                                          @RequestBody @Valid SaveDashboardRequest saveDashboardRequest,
+                                          Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(dashboardService.update(id, saveDashboardRequest, user));
     }
 }

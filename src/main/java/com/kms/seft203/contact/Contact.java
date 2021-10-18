@@ -24,7 +24,6 @@ public class Contact {
     private Long id;
 
     @Column(nullable = false, length = 30)
-//    @NotBlank
     private String firstName;
 
     @Column(nullable = false, length = 50)

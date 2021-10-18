@@ -1,10 +1,12 @@
 package com.kms.seft203.dashboard;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +36,7 @@ public class Widget {
     private Integer minWidth;
     private Integer minHeight;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @ToString.Exclude
     @JoinTable(name = "widget_config",
             joinColumns = @JoinColumn(name = "widget_id"),
@@ -43,5 +45,6 @@ public class Widget {
 
     @ManyToOne
     @JoinColumn(name = "dashboard_id")
+    @JsonIgnore
     private Dashboard dashboard;
 }

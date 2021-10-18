@@ -1,6 +1,7 @@
 package com.kms.seft203.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kms.seft203.dashboard.Dashboard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,8 +37,13 @@ public class User {
 
     private String fullName;
 
-    @OneToOne(mappedBy = "user")
-    private Dashboard dashboard;
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<Dashboard> dashboards;
 
     public static User of(RegisterRequest registerRequest) {
         return new User(
