@@ -37,7 +37,7 @@ For skipping tests (one test intentionally to fail)
 - [x] Auth API
 - [x] Contact API
 - [x] Dashboard API
-- [ ] Report API
+- [x] Report API
 - [x] Task API
 - [x] Data stored in the RDBMS
 - [x] Migration management

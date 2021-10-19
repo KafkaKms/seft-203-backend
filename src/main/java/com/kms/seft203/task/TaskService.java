@@ -1,5 +1,6 @@
 package com.kms.seft203.task;
 
+import com.kms.seft203.auth.User;
 import com.kms.seft203.exceptions.DataNotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.NonNull;
@@ -29,13 +30,13 @@ public class TaskService {
         }
     }
 
-    public Task create(@NonNull SaveTaskRequest saveTaskRequest) {
-        return taskRepository.saveAndFlush(Task.of(saveTaskRequest));
+    public Task create(@NonNull SaveTaskRequest saveTaskRequest, User user) {
+        return taskRepository.saveAndFlush(Task.of(saveTaskRequest, user));
     }
 
-    public Task update(Long id, SaveTaskRequest saveTaskRequest) {
+    public Task update(Long id, SaveTaskRequest saveTaskRequest, User user) {
         if (taskRepository.existsById(id)) {
-            return taskRepository.saveAndFlush(Task.of(saveTaskRequest));
+            return taskRepository.saveAndFlush(Task.of(saveTaskRequest, user));
         } else {
             throw new DataNotFoundException();
         }

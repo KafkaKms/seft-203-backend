@@ -1,16 +1,21 @@
 package com.kms.seft203.report;
 
+import com.kms.seft203.auth.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/reports")
 public class ReportApi {
+
+    @Autowired
+    private ReportService reportService;
 
     /*
     Count by field in a collection
@@ -19,14 +24,8 @@ public class ReportApi {
         - Number of completed, not completed tasks in Task collection
     * */
     @GetMapping("_countBy/{collection}/{field}")
-    public Map<String, Integer> countBy(@PathVariable String collection, @PathVariable String field) {
-        Map<String, Integer> data = new HashMap<>();
-
-        data.put("EM", 10);
-        data.put("TE", 100);
-        data.put("SE", 988);
-        data.put("BA", 14);
-
-        return data;
+    public Map<String, Integer> countBy(@PathVariable String collection, @PathVariable String field, Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        return reportService.countFieldsOfCollection(collection, field, user);
     }
 }

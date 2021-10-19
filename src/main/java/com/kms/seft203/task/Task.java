@@ -1,15 +1,22 @@
 package com.kms.seft203.task;
 
-import lombok.*;
-import org.hibernate.Hibernate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kms.seft203.auth.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Objects;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,29 +24,22 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task implements Serializable {
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
+
     protected String task; // NOSONAR
+
     protected Boolean isCompleted;
-    @Column(length = 20)
-    protected String userId;
 
-    public static Task of(SaveTaskRequest saveTaskRequest) {
-        return new Task(null, saveTaskRequest.getTask(), false, saveTaskRequest.getUserId());
-    }
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    @JsonIgnore
+    private User user;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        var item = (Task) o;
-        return id != null && Objects.equals(id, item.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
+    public static Task of(SaveTaskRequest saveTaskRequest, User user) {
+        return new Task(null, saveTaskRequest.getTask(), false, user);
     }
 }

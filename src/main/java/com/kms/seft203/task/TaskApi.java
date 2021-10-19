@@ -1,7 +1,9 @@
 package com.kms.seft203.task;
 
+import com.kms.seft203.auth.User;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,18 +34,22 @@ public class TaskApi {
     }
 
     @PostMapping
-    public ResponseEntity<Task> create(@Valid @RequestBody SaveTaskRequest saveTaskRequest) {
+    public ResponseEntity<Task> create(@Valid @RequestBody SaveTaskRequest saveTaskRequest, Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+
         if (ObjectUtils.isNotEmpty(saveTaskRequest)) {
-            return ResponseEntity.ok(taskService.create(saveTaskRequest));
+            return ResponseEntity.ok(taskService.create(saveTaskRequest, user));
         }
 
         return ResponseEntity.badRequest().body(null);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> update(@PathVariable Long id, @Valid @RequestBody SaveTaskRequest saveTaskRequest) {
+    public ResponseEntity<Task> update(@PathVariable Long id, @Valid @RequestBody SaveTaskRequest saveTaskRequest, Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+
         if (ObjectUtils.isNotEmpty(id)) {
-            return ResponseEntity.ok(taskService.update(id, saveTaskRequest));
+            return ResponseEntity.ok(taskService.update(id, saveTaskRequest, user));
         }
 
         return ResponseEntity.badRequest().body(null);

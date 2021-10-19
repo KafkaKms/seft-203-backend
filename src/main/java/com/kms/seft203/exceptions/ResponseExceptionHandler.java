@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +50,14 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
                                                            HttpServletRequest httpServletRequest) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .body(toJson(exception, request, httpServletRequest));
+    }
+
+    @ExceptionHandler({ResponseStatusException.class})
+    public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException exception, WebRequest request,
+                                                           HttpServletRequest httpServletRequest) {
+        return ResponseEntity
+                .status(exception.getStatus())
                 .body(toJson(exception, request, httpServletRequest));
     }
 }
