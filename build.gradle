@@ -36,6 +36,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.5'
 	runtimeOnly 'org.postgresql:postgresql:42.2.24.jre7'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testImplementation 'junit:junit:4.13.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
 }
 
