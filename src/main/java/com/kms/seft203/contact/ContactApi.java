@@ -1,6 +1,7 @@
 package com.kms.seft203.contact;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,19 +25,25 @@ public class ContactApi {
     }
 
     @GetMapping
-    public List<Contact> getAll() {
-        return contactService.getAll();
+    public ResponseEntity<List<Contact>> getAll() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(contactService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Contact> getOne(@PathVariable Long id) {
-        return ResponseEntity.ok(contactService.findById(id));
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(contactService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<Contact> create(@Valid @RequestBody SaveContactRequest saveContactRequest) {
         if (ObjectUtils.isNotEmpty(saveContactRequest)) {
-            return ResponseEntity.ok(contactService.create(Contact.of(saveContactRequest)));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(contactService.create(saveContactRequest));
         }
 
         return ResponseEntity.badRequest().build();
@@ -45,7 +52,9 @@ public class ContactApi {
     @PutMapping("/{id}")
     public ResponseEntity<Contact> update(@PathVariable Long id,
                                           @Valid @RequestBody SaveContactRequest saveContactRequest) {
-        return ResponseEntity.ok(contactService.update(id, Contact.of(saveContactRequest)));
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(contactService.update(id, saveContactRequest));
     }
 
     @DeleteMapping("/{id}")

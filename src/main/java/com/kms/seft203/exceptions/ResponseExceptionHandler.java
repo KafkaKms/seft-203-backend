@@ -29,7 +29,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
                     "body",
                     Json.mapper().readValue(httpServletRequest.getReader(), Object.class)
             );
-        } catch (IOException e) {
+        } catch (Exception e) {
             data.put("body", null);
         }
 

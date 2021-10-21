@@ -29,15 +29,15 @@ public class ContactService {
         return contact;
     }
 
-    public Contact create(Contact contact) {
-        return contactRepository.save(contact);
+    public Contact create(SaveContactRequest saveContactRequest) {
+        return contactRepository.save(Contact.of(saveContactRequest));
     }
 
-    public Contact update(Long id, Contact newContact) {
+    public Contact update(Long id, SaveContactRequest saveContactRequest) {
         if (!contactRepository.existsById(id)) {
             throw new DataNotFoundException();
         } else {
-            return contactRepository.save(newContact);
+            return contactRepository.save(Contact.of(saveContactRequest));
         }
     }
 
