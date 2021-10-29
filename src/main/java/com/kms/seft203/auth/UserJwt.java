@@ -15,8 +15,6 @@ public class UserJwt {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String token;
-
     private String refreshToken;
 
     @ManyToOne

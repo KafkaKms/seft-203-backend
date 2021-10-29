@@ -8,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserJwtRepository extends JpaRepository<UserJwt, Long> {
-    @Query("select u from UserJwt u where u.token = :token")
-    Optional<UserJwt> findByToken(String token);
+    Optional<UserJwt> findByUserId(Long userId);
+
+    @Query("select u from UserJwt u where u.refreshToken = :refreshToken")
+    Optional<UserJwt> findByRefreshToken(String refreshToken);
 }

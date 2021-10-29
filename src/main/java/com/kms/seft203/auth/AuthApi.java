@@ -37,8 +37,13 @@ public class AuthApi {
 
     @PostMapping("/logout")
     public ResponseEntity<Object> logout(Authentication authentication) {
-        var token = (String) authentication.getCredentials();
-        userService.logout(token);
+        var user = (User) authentication.getPrincipal();
+        userService.logout(user.getId());
         return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse> refresh(@RequestBody @Valid RefreshRequest refreshRequest) {
+        return ResponseEntity.ok(userService.refresh(refreshRequest));
     }
 }

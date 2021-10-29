@@ -40,6 +40,6 @@ public class Task {
     private User user;
 
     public static Task of(SaveTaskRequest saveTaskRequest, User user) {
-        return new Task(null, saveTaskRequest.getTask(), false, user);
+        return new Task(0L, saveTaskRequest.getTask(), false, user);
     }
 }

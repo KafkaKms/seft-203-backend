@@ -45,11 +45,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         // Get jwt token and validate
         var token = header.split(" ")[1].trim();
-        var username = jwtService.decodeJwtToken(token);
+        var username = jwtService.decodeJwtToken(token).getClaim("username").asString();
         var user = userRepository.findByUsername(username).orElse(null);
-        var userJwt = userJwtRepository.findByToken(token).orElse(null);
 
-        if (ObjectUtils.anyNull(user, userJwt) || !Objects.requireNonNull(userJwt).isValid()) {
+        if (ObjectUtils.isEmpty(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid access token");
         }
 
@@ -67,6 +66,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         var path = request.getRequestURI();
-        return path.contains("/auth/login") || path.contains("/auth/register");
+        return path.contains("/auth/login") || path.contains("/auth/register") || path.contains("/auth/refresh");
     }
 }

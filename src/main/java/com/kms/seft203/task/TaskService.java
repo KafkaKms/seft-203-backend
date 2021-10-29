@@ -31,12 +31,12 @@ public class TaskService {
     }
 
     public Task create(@NonNull SaveTaskRequest saveTaskRequest, User user) {
-        return taskRepository.saveAndFlush(Task.of(saveTaskRequest, user));
+        return taskRepository.save(Task.of(saveTaskRequest, user));
     }
 
     public Task update(Long id, SaveTaskRequest saveTaskRequest, User user) {
         if (taskRepository.existsById(id)) {
-            return taskRepository.saveAndFlush(Task.of(saveTaskRequest, user));
+            return taskRepository.save(Task.of(saveTaskRequest, user));
         } else {
             throw new DataNotFoundException();
         }

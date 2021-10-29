@@ -45,14 +45,20 @@ public class UserService {
         }
 
         var encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(password, user.getPassword())) {
+
+        if (!encoder.matches(password, user.getPassword())) { //NOSONAR
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
 
         var token = jwtService.generateJwtToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
 
-        userJwtRepository.save(new UserJwt(0L, token, refreshToken, user, true));
+        var userJwt = userJwtRepository.findByUserId(user.getId());
+
+        var refreshToken = userJwt.isEmpty() ? jwtService.generateRefreshToken() : userJwt.get().getRefreshToken();
+
+        if (userJwt.isEmpty()) {
+            userJwtRepository.save(new UserJwt(0L, refreshToken, user, true));
+        }
 
         return new LoginResponse(
                 token,
@@ -60,11 +66,24 @@ public class UserService {
         );
     }
 
-    public void logout(String token) {
-        var userJwt = userJwtRepository.findByToken(token).orElse(null);
+    public LoginResponse refresh(RefreshRequest refreshRequest) {
+        var userJwt = userJwtRepository.findByRefreshToken(refreshRequest.getRefreshToken());
+
+        if (userJwt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can't find refresh token");
+        }
+
+        return new LoginResponse(
+                jwtService.generateJwtToken(userJwt.get().getUser()),
+                refreshRequest.getRefreshToken()
+        );
+    }
+
+    public void logout(Long userId) {
+        var userJwt = userJwtRepository.findByUserId(userId).orElse(null);
         assert userJwt != null;
         userJwt.setValid(false);
 
-        userJwtRepository.save(userJwt);
+        userJwtRepository.delete(userJwt);
     }
 }
