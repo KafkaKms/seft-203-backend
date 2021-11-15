@@ -111,7 +111,7 @@ public class ReportService {
                         .map(Dashboard::getTitle)
                         .collect(Collectors.toList());
             }
-            case "layoutType": {
+            case "layouttype": {
                 return dashboardRepository.getAllByUserId(user.getId())
                         .stream()
                         .map(Dashboard::getLayoutType)
