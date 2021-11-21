@@ -1,5 +1,7 @@
-package com.kms.seft203;
+package com.kms.seft203.app;
 
+import com.kms.seft203.AppVersion;
+import com.kms.seft203.AppVersionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

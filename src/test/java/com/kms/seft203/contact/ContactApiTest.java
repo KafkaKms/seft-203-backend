@@ -1,7 +1,8 @@
-package com.kms.seft203;
+package com.kms.seft203.contact;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kms.seft203.AppVersionRepository;
 import com.kms.seft203.auth.JwtService;
 import com.kms.seft203.auth.UserJwtRepository;
 import com.kms.seft203.auth.UserRepository;

@@ -1,6 +1,7 @@
-package com.kms.seft203;
+package com.kms.seft203.task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kms.seft203.AppVersionRepository;
 import com.kms.seft203.auth.JwtService;
 import com.kms.seft203.auth.User;
 import com.kms.seft203.auth.UserJwtRepository;
