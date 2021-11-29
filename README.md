@@ -47,6 +47,6 @@ For skipping tests (one test intentionally to fail)
 - [x] Data need to be validated
 - [x] All the APIs only allow authenticated users to access except /auth/login API
 - [x] Password needs to be stored securely in the database
-- [ ] Unit test
+- [x] Unit test
 - [ ] Code coverage 70%
 
